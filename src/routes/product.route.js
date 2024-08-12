@@ -1,12 +1,23 @@
 const express = require("express");
 const productRoute = express.Router();
-const Product = require("../models/product.model.js");
 const productController = require("../controllers/product.controller.js");
+const {
+  updatedProductMiddleWare,
+  productValidatorMiddleWare,
+} = require("../validators/product.validator.js");
 
 productRoute.get("/", productController.getProducts);
 productRoute.get("/:id", productController.getProduct);
-productRoute.post("/", productController.createProduct);
-productRoute.put("/:id", productController.updateProduct);
+productRoute.post(
+  "/",
+  productValidatorMiddleWare,
+  productController.createProduct
+);
+productRoute.put(
+  "/:id",
+  updatedProductMiddleWare,
+  productController.updateProduct
+);
 productRoute.delete("/:id", productController.deleteProduct);
 
 module.exports = productRoute;
